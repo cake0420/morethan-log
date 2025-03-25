@@ -3,18 +3,31 @@ import PostDetail from "./PostDetail"
 import PageDetail from "./PageDetail"
 import styled from "@emotion/styled"
 import usePostQuery from "src/hooks/usePostQuery"
+import { ExtendedRecordMap } from "notion-types"
+import { FC } from "react";
 
-type Props = {}
+type Props = {
+  recordMap: ExtendedRecordMap;
+  components: {
+    Code?: any;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+  };
+}
 
-const Detail: React.FC<Props> = () => {
+const Detail: FC<Props> = () => {
   const data = usePostQuery()
   useMermaidEffect()
 
   if (!data) return null
   return (
     <StyledWrapper data-type={data.type}>
-      {data.type[0] === "Page" && <PageDetail />}
-      {data.type[0] !== "Page" && <PostDetail />}
+      {data.type[0] === "Page" && <PageDetail recordMap={data.recordMap} components={{}}/>}
+      {data.type[0] !== "Page" && <PostDetail recordMap={data.recordMap} components={{}}/>}
     </StyledWrapper>
   )
 }
