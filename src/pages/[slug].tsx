@@ -11,10 +11,27 @@ import { queryKey } from "src/constants/queryKey"
 import { dehydrate } from "@tanstack/react-query"
 import usePostQuery from "src/hooks/usePostQuery"
 import { FilterPostsOptions } from "src/libs/utils/notion/filterPosts"
+import { ExtendedRecordMap } from "notion-types"
+import { FC, ComponentType } from "react";
+import { BlockProps } from "src/routes/Detail/components/NotionRenderer"
 
 const filter: FilterPostsOptions = {
   acceptStatus: ["Public", "PublicOnDetail"],
   acceptType: ["Paper", "Post", "Page"],
+}
+
+interface DetailPageProps {
+  recordMap: ExtendedRecordMap;
+  components: {
+    Code?: any;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+    Block: FC<BlockProps>;
+  };
 }
 
 export const getStaticPaths = async () => {
@@ -27,7 +44,7 @@ export const getStaticPaths = async () => {
   }
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) => {
   const slug = context.params?.slug
 
   const posts = await getPosts()
@@ -46,12 +63,30 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
+      recordMap : recordMap,
+      components : {
+        Block : null
+      }
     },
     revalidate: CONFIG.revalidateTime,
   }
 }
 
-const DetailPage: NextPageWithLayout = () => {
+interface Props  {
+  recordMap: ExtendedRecordMap;
+  components: {
+    Code?: any;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+    Block: FC<BlockProps>;
+  };
+}
+
+const DetailPage: NextPageWithLayout<Props> = ({recordMap, components}) => {
   const post = usePostQuery()
 
   if (!post) return <CustomError />
@@ -75,7 +110,7 @@ const DetailPage: NextPageWithLayout = () => {
   return (
     <>
       <MetaConfig {...meta} />
-      <Detail />
+      <Detail recordMap={recordMap} components={components}/>
     </>
   )
 }
