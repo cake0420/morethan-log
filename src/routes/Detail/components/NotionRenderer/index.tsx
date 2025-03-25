@@ -1,20 +1,20 @@
-import dynamic from "next/dynamic";
-import Image from "next/image";
-import Link from "next/link";
-import { ExtendedRecordMap, CodeBlock } from "notion-types";
-import useScheme from "src/hooks/useScheme";
+import dynamic from "next/dynamic"
+import Image from "next/image"
+import Link from "next/link"
+import { ExtendedRecordMap } from "notion-types"
+import useScheme from "src/hooks/useScheme"
 
 // core styles shared by all of react-notion-x (required)
-import "react-notion-x/src/styles.css";
+import "react-notion-x/src/styles.css"
 
 // used for code syntax highlighting (optional)
-import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/themes/prism-tomorrow.css"
 
 // used for rendering equations (optional)
 
-import "katex/dist/katex.min.css";
-import { FC, ComponentType, HTMLAttributes } from "react";
-import styled from "@emotion/styled";
+import "katex/dist/katex.min.css"
+import { FC } from "react"
+import styled from "@emotion/styled"
 
 const _NotionRenderer = dynamic(
   () => import("react-notion-x").then((m) => m.NotionRenderer),
@@ -50,65 +50,27 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
-interface CustomCodeProps {
-  block: any; // 정확한 Block 타입으로 대체
-  className?: string;
-  defaultLanguage?: string;
+type Props = {
+  recordMap: ExtendedRecordMap
 }
 
-const CustomCode: FC<CustomCodeProps> = ({ block, className, defaultLanguage }) => {
-  const backgroundColor = block?.format?.backgroundColor;
-  const style = {
-    width: '100%',
-    display: 'inline-block',
-    padding: '2px 4px',
-    margin: 0,
-    backgroundColor: backgroundColor || 'transparent',
-  };
-
-  return (
-    <code className={className} style={style}>
-      {block.properties?.title}
-    </code>
-  );
-};
-
-// Props 타입 정의
-interface Props extends HTMLAttributes<HTMLDivElement> {
-  recordMap: ExtendedRecordMap;
-  components?: {
-    Code?: ComponentType<CustomCodeProps>;
-    Collection?: any;
-    Equation?: any;
-    Modal?: any;
-    Pdf?: any;
-    nextImage?: any;
-    nextLink?: any;
-  };
-  darkMode?: boolean;
-  mapPageUrl?: (id: string) => string;
-}
-
-const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components, ...props }) => {
+const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
-
   return (
     <StyledWrapper>
       <_NotionRenderer
         darkMode={scheme === "dark"}
         recordMap={recordMap}
         components={{
-          Code: CustomCode, // CustomCode 컴포넌트로 Code 컴포넌트 대체
+          Code,
           Collection,
           Equation,
           Modal,
           Pdf,
           nextImage: Image,
           nextLink: Link,
-          ...components,
         }}
         mapPageUrl={mapPageUrl}
-        {...props}
       />
     </StyledWrapper>
   )
@@ -128,4 +90,4 @@ const StyledWrapper = styled.div`
         width: 100%;
     }
     
-`
+`;
