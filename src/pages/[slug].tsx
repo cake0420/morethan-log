@@ -13,20 +13,11 @@ import usePostQuery from "src/hooks/usePostQuery"
 import { FilterPostsOptions } from "src/libs/utils/notion/filterPosts"
 import { ExtendedRecordMap } from "notion-types"
 import { FC, ComponentType } from "react";
+import { BlockProps } from "src/routes/Detail/components/NotionRenderer"
 
 const filter: FilterPostsOptions = {
   acceptStatus: ["Public", "PublicOnDetail"],
   acceptType: ["Paper", "Post", "Page"],
-}
-
-export const getStaticPaths = async () => {
-  const posts = await getPosts()
-  const filteredPost = filterPosts(posts, filter)
-
-  return {
-    paths: filteredPost.map((row) => `/${row.slug}`),
-    fallback: true,
-  }
 }
 
 interface DetailPageProps {
@@ -39,7 +30,18 @@ interface DetailPageProps {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
+}
+
+export const getStaticPaths = async () => {
+  const posts = await getPosts()
+  const filteredPost = filterPosts(posts, filter)
+
+  return {
+    paths: filteredPost.map((row) => `/${row.slug}`),
+    fallback: true,
+  }
 }
 
 export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) => {
@@ -62,7 +64,9 @@ export const getStaticProps: GetStaticProps<DetailPageProps> = async (context) =
     props: {
       dehydratedState: dehydrate(queryClient),
       recordMap : recordMap,
-      components : {}
+      components : {
+        Block : null
+      }
     },
     revalidate: CONFIG.revalidateTime,
   }
@@ -78,6 +82,7 @@ interface Props  {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
 }
 
