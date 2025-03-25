@@ -56,7 +56,7 @@ type Props = {
 // 제목 행 컴포넌트 오버라이딩
 const CustomHeading = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div> {/* div로 감싸기 */}
+    <div className="notion-header-block"> {/* div로 감싸기 */}
       {children}
     </div>
   );
@@ -98,5 +98,19 @@ const StyledWrapper = styled.div`
     }
     .notion-list {
         width: 100%;
+    }
+
+    /* 제목 행 스타일 */
+    .notion-header-block {
+        /* 모든 heading block 에 적용*/
+        & > h2,
+        & > h3,
+        & > h4 {
+            /* h2, h3, h4 태그를 div로 감싸기 */
+            display: block; /* 또는 inline-block */
+            /* 필요한 스타일 추가 */
+            margin-bottom: 1rem; /* 예시 */
+            /* background-color: #f0f0f0; /* 예시 */
+        }
     }
 `;
