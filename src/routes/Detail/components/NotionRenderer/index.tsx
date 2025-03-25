@@ -50,16 +50,23 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
-import { Block } from 'notion-types'; // notion-types에서 Block 타입 가져오기
+import { NotionRenderer as ReactNotionXNotionRenderer } from 'react-notion-x';
 
-type Props = {
-  recordMap: ExtendedRecordMap;
+// Declaration Merging을 사용하여 react-notion-x의 IProps 인터페이스 확장
+declare module 'react-notion-x' {
+  interface IProps {
+    recordMap: ExtendedRecordMap;
+    darkMode?: boolean;
+    mapPageUrl?: (id: string) => string;
+    blockRenderer?: (block: any) => React.ReactNode;
+  }
 }
 
-const NotionRenderer: FC<Props> = ({ recordMap }) => {
+type Props = React.ComponentProps<typeof ReactNotionXNotionRenderer>;
+const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, blockRenderer, ...props }) => {
   const [scheme] = useScheme()
 
-  const getInlineCodeStyle = (block: Block) => { // block 타입을 Block으로 명시
+  const getInlineCodeStyle = (block: any) => { // block 타입을 any로 임시 처리
     // block에서 스타일 정보 추출 (예시)
     const backgroundColor = block?.format?.backgroundColor;
     return {
@@ -86,17 +93,8 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
           nextLink: Link,
         }}
         mapPageUrl={mapPageUrl}
-        // 인라인 스타일 적용
-        blockRenderer={(block: Block) => { // block 타입을 Block으로 명시
-          if (block.type === 'code' && block.properties?.language === 'inline') {
-            return (
-              <code style={getInlineCodeStyle(block)}>
-                {block.properties.title}
-              </code>
-            );
-          }
-          return null; // 다른 블록은 기본 렌더링
-        }}
+        blockRenderer={blockRenderer}
+        {...props} // 나머지 props 전달
       />
     </StyledWrapper>
   )
