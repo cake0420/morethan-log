@@ -11,7 +11,6 @@ import "react-notion-x/src/styles.css"
 import "prismjs/themes/prism-tomorrow.css"
 
 // used for rendering equations (optional)
-
 import "katex/dist/katex.min.css"
 import { FC } from "react"
 import styled from "@emotion/styled"
@@ -56,17 +55,67 @@ type Props = {
 
 const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
+
+  const customComponents = {
+    Code,
+    Collection,
+    Equation,
+    Modal,
+    Pdf,
+    nextImage: Image,
+    nextLink: Link,
+    // Custom render for h tags
+    h1: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h1 {...props} />
+      )
+    },
+    h2: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h2 {...props} />
+      )
+    },
+    h3: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h3 {...props} />
+      )
+    },
+    h4: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h4 {...props} />
+      )
+    },
+    h5: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h5 {...props} />
+      )
+    },
+    h6: (props: any) => {
+      return props.className === 'notion-h' ? (
+        <div>{props.children}</div>
+      ) : (
+        <h6 {...props} />
+      )
+    },
+  }
+
   return (
     <StyledWrapper>
       <_NotionRenderer
         darkMode={scheme === "dark"}
         recordMap={recordMap}
         components={{
-          Code,
-          Collection,
-          Equation,
-          Modal,
-          Pdf,
+          ...customComponents,
           nextImage: Image,
           nextLink: Link,
         }}
@@ -79,14 +128,13 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
 export default NotionRenderer
 
 const StyledWrapper = styled.div`
-  /* // TODO: why render? */
-  .notion-collection-page-properties {
-    display: none !important;
-  }
-  .notion-page {
-    padding: 0;
-  }
-  .notion-list {
-    width: 100%;
-  }
+    .notion-collection-page-properties {
+        display: none !important;
+    }
+    .notion-page {
+        padding: 0;
+    }
+    .notion-list {
+        width: 100%;
+    }
 `
