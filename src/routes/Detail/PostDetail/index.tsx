@@ -8,6 +8,8 @@ import NotionRenderer from "../components/NotionRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
 import { ExtendedRecordMap } from "notion-types";
 import { FC, ComponentType } from "react";
+import { CustomCodeProps } from '../components/NotionRenderer/index';
+import { BlockProps } from '../components/NotionRenderer/index';
 
 interface PostDetailProps {
   recordMap: ExtendedRecordMap;
@@ -19,6 +21,7 @@ interface PostDetailProps {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
 }
 
