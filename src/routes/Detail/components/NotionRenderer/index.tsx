@@ -1,8 +1,7 @@
-// pages/detail.tsx
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
-import { ExtendedRecordMap, CodeBlock } from "notion-types"
+import { ExtendedRecordMap, CodeBlock, Block } from "notion-types"
 import useScheme from "src/hooks/useScheme"
 
 // core styles shared by all of react-notion-x (required)
@@ -52,13 +51,13 @@ const mapPageUrl = (id: string) => {
 }
 
 interface CustomCodeProps {
-  block: any; // 정확한 Block 타입으로 대체
+  block: CodeBlock;
   className?: string;
   defaultLanguage?: string;
 }
 
 interface BlockProps {
-  block: any;
+  block: NotionBlock;
   children?: ReactNode;
   className?: string;
   bodyClassName?: string;
@@ -74,79 +73,68 @@ interface BlockProps {
   level?: number;
 }
 
-const CustomBlock: FC<BlockProps> = (props) => {
-  const { block, children, className } = props;
+const CustomBlock: FC<BlockProps> = ({ block, children, className }) => {
+  const headingStyle = {
+    width: '100%',
+    display: 'block',
+    backgroundColor: block?.format?.block_color || 'transparent',
+  };
 
-  if (block.type === 'header' || block.type === 'sub_header' || block.type === 'sub_sub_header') {
-    const id = mapPageUrl(block.id);
-    const title = block.properties?.title?.[0]?.[0] || `제목 ${id}`;
-    const blockColor = block.format?.block_color
-    const backgroundColor = block?.format?.backgroundColor;
-
-    const headingStyle = {
-      width: '100%',
-      display: 'block',
-      backgroundColor: backgroundColor || 'transparent',
-    };
-
-    let Tag:any = 'h1'
-    if (block.type === 'sub_header') {
-      Tag = 'h2'
-    } else if (block.type === 'sub_sub_header') {
-      Tag = 'h3'
-    }
-
-    return (
-      <div style={headingStyle}>
-        <Tag className={className}>
-          {block.properties?.title?.[0]?.[0]}
-        </Tag>
-        {children}
-      </div>
-    );
+  let Tag:any = 'h1'
+  if (block.type === 'sub_header') {
+    Tag = 'h2'
+  } else if (block.type === 'sub_sub_header') {
+    Tag = 'h3'
   }
 
-  return <>{props.children}</>;
+  return (
+    <div style={headingStyle}>
+      <Tag className={className}>
+        {block.properties?.title?.[0]?.[0]}
+      </Tag>
+      {children}
+    </div>
+  );
 };
 
 type Props = {
   recordMap: ExtendedRecordMap;
   components: {
-    Code?: any;
+    Code?: ComponentType<CustomCodeProps>;
     Collection?: any;
     Equation?: any;
     Modal?: any;
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
-    Block?: any;
+    Block: FC<BlockProps>; // 변경: react-notion-x에서 확장된 타입 사용
   };
   darkMode?: boolean;
   mapPageUrl?: (id: string) => string;
 }
 
-const NotionRenderer: FC<Props> = ({ recordMap, components, darkMode, mapPageUrl }) => {
+const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components, }) => {
   const [scheme] = useScheme()
 
   return (
-    <StyledWrapper>
-      <_NotionRenderer
-        darkMode={scheme === "dark"}
-        recordMap={recordMap}
-        components={{
-          ...components,
-          Block: CustomBlock,
-          Code,
-          Collection,
-          Equation,
-          Modal,
-          Pdf,
-          nextImage: Image,
-          nextLink: Link,
-        }}
-        mapPageUrl={mapPageUrl}
-      />
-    </StyledWrapper>
+
+    <_NotionRenderer
+      darkMode={scheme === "dark"}
+      recordMap={recordMap}
+      components={{
+        ...components,
+        Block: CustomBlock, // CustomBlock 컴포넌트로 Block 컴포넌트 대체
+        Collection,
+        Code,
+        Equation,
+        Modal,
+        Pdf,
+        nextImage: Image,
+        nextLink: Link,
+      }}
+      mapPageUrl={mapPageUrl}
+    />
+
   )
 }
 
