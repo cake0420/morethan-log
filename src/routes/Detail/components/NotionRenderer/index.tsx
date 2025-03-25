@@ -50,15 +50,13 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
-// CustomCodeProps 인터페이스 export
-export interface CustomCodeProps {
+interface CustomCodeProps {
   block: CodeBlock;
   className?: string;
   defaultLanguage?: string;
 }
 
-// BlockProps 인터페이스 export
-export interface BlockProps {
+interface BlockProps {
   block: NotionBlock;
   children?: ReactNode;
   className?: string;
@@ -120,7 +118,11 @@ declare module 'react-notion-x' {
 type Props = {
   recordMap: ExtendedRecordMap;
   components: {
-    Code?: ComponentType<CustomCodeProps>;
+    Code?: ComponentType<{
+      block: CodeBlock;
+      defaultLanguage?: string | undefined;
+      className?: string | undefined;
+    }>;
     Collection?: any;
     Equation?: any;
     Modal?: any;
@@ -143,7 +145,8 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
       recordMap={recordMap}
       components={{
         ...components,
-        Code: CustomCode, // CustomCode 컴포넌트로 Code 컴포넌트 대체
+        Block: CustomBlock, // CustomBlock 컴포넌트로 Block 컴포넌트 대체
+        Code,
         Collection,
         Equation,
         Modal,

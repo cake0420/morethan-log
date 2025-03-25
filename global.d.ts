@@ -1,6 +1,6 @@
 import { FC, ComponentType } from 'react';
 import { CodeBlock } from 'notion-types';
-import { BlockProps } from './src/routes/Detail/components/NotionRenderer/index'; // Import BlockProps
+import { BlockProps } from "./src/routes/Detail/components/NotionRenderer"; // Import BlockProps
 
 declare module 'react-notion-x' {
   interface NotionComponents {
