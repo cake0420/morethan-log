@@ -56,6 +56,18 @@ type Props = {
 
 const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
+
+  const getInlineCodeStyle = (block) => {
+    const backgroundColor = block?.properties?.backgroundColor; // 속성 경로 수정
+    return {
+      width: '100%',
+      display: 'inline-block',
+      padding: '2px 4px',
+      margin: 0,
+      backgroundColor: backgroundColor || 'transparent', // 배경색이 없으면 투명하게 처리
+    };
+  };
+
   return (
     <StyledWrapper>
       <_NotionRenderer
@@ -71,6 +83,17 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
           nextLink: Link,
         }}
         mapPageUrl={mapPageUrl}
+        // 인라인 스타일 적용
+        blockRenderer={(block) => {
+          if (block.type === 'code' && block.properties?.language === 'inline') {
+            return (
+              <code style={getInlineCodeStyle(block)}>
+                {block.properties.title}
+              </code>
+            );
+          }
+          return null; // 다른 블록은 기본 렌더링
+        }}
       />
     </StyledWrapper>
   )
@@ -89,12 +112,5 @@ const StyledWrapper = styled.div`
     .notion-list {
         width: 100%;
     }
-
-    /* 인라인 스타일 직접 재정의 (클래스명을 찾을 수 없는 경우) */
-    [style*="background-color"] {
-        width: 100% !important;
-        display: inline-block;
-        padding: 2px 4px;
-        margin: 0;
-    }
-`;
+    
+`
