@@ -97,40 +97,9 @@ const CustomBlock: FC<BlockProps> = ({ block, children, className }) => {
   );
 };
 
-// react-notion-x 타입 확장
-declare module 'react-notion-x' {
-  interface NotionComponents {
-    Block?: FC<BlockProps>;
-    Code?: ComponentType<{
-      block: CodeBlock;
-      defaultLanguage?: string | undefined;
-      className?: string | undefined;
-    }>;
-    Collection?: any;
-    Equation?: any;
-    Modal?: any;
-    Pdf?: any;
-    nextImage?: any;
-    nextLink?: any;
-  }
-}
-
 type Props = {
   recordMap: ExtendedRecordMap;
-  components: {
-    Code?: ComponentType<{
-      block: CodeBlock;
-      defaultLanguage?: string | undefined;
-      className?: string | undefined;
-    }>;
-    Collection?: any;
-    Equation?: any;
-    Modal?: any;
-    Pdf?: any;
-    nextImage?: any;
-    nextLink?: any;
-    Block?: FC<BlockProps>;
-  };
+  components?: Partial<NotionComponents> ;
   darkMode?: boolean;
   mapPageUrl?: (id: string) => string;
 }
@@ -139,7 +108,6 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
   const [scheme] = useScheme()
 
   return (
-
     <_NotionRenderer
       darkMode={scheme === "dark"}
       recordMap={recordMap}
@@ -156,7 +124,6 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
       }}
       mapPageUrl={mapPageUrl}
     />
-
   )
 }
 
