@@ -57,6 +57,8 @@ interface CustomCodeProps {
 }
 
 const CustomCode: FC<CustomCodeProps> = ({ block, className, defaultLanguage }) => {
+  console.log('CustomCode 렌더링', block); // CustomCode 컴포넌트 호출 확인
+
   const backgroundColor = block?.format?.backgroundColor;
   const isHeading = block.type === 'header' || block.type === 'sub_header' || block.type === 'heading_3'; // Notion 데이터 구조에 따라 수정
 
