@@ -1,20 +1,20 @@
-import dynamic from "next/dynamic"
-import Image from "next/image"
-import Link from "next/link"
-import { ExtendedRecordMap, CodeBlock } from "notion-types"
-import useScheme from "src/hooks/useScheme"
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import { ExtendedRecordMap, CodeBlock } from "notion-types";
+import useScheme from "src/hooks/useScheme";
 
 // core styles shared by all of react-notion-x (required)
-import "react-notion-x/src/styles.css"
+import "react-notion-x/src/styles.css";
 
 // used for code syntax highlighting (optional)
-import "prismjs/themes/prism-tomorrow.css"
+import "prismjs/themes/prism-tomorrow.css";
 
 // used for rendering equations (optional)
 
-import "katex/dist/katex.min.css"
-import { FC, ComponentType } from "react"
-import styled from "@emotion/styled"
+import "katex/dist/katex.min.css";
+import { FC, ComponentType, HTMLAttributes } from "react";
+import styled from "@emotion/styled";
 
 const _NotionRenderer = dynamic(
   () => import("react-notion-x").then((m) => m.NotionRenderer),
@@ -50,8 +50,6 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
-import { NotionRenderer as ReactNotionXNotionRenderer, IProps, NotionComponents } from 'react-notion-x';
-
 interface CustomCodeProps {
   block: any; // 정확한 Block 타입으로 대체
   className?: string;
@@ -75,12 +73,21 @@ const CustomCode: FC<CustomCodeProps> = ({ block, className, defaultLanguage }) 
   );
 };
 
-type Props = {
+// Props 타입 정의
+interface Props extends HTMLAttributes<HTMLDivElement> {
   recordMap: ExtendedRecordMap;
-  components?: Partial<NotionComponents>;
+  components?: {
+    Code?: ComponentType<CustomCodeProps>;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+  };
   darkMode?: boolean;
   mapPageUrl?: (id: string) => string;
-} & Omit<IProps, 'recordMap' | 'darkMode' | 'mapPageUrl' | 'components' | 'className' | 'style'>;
+}
 
 const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components, ...props }) => {
   const [scheme] = useScheme()
@@ -120,5 +127,5 @@ const StyledWrapper = styled.div`
     .notion-list {
         width: 100%;
     }
-
+    
 `
