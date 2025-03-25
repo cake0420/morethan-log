@@ -88,10 +88,9 @@ const StyledWrapper = styled.div`
   }
   .notion-list {
     width: 100%;
-  } 
-    .notion-inline-code { /* react-notion-x에서 사용하는 클래스명 확인 필요 */
-        width: 100%; /* 또는 display: block; */
-        /* 필요한 경우 다른 스타일 추가 */
+  }
+    .notion-inline-code {
+        width: 100% !important; /* 또는 display: block !important; */
     }
 
     ;
