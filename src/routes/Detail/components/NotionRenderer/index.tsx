@@ -51,7 +51,6 @@ const mapPageUrl = (id: string) => {
 }
 
 import { NotionRenderer as ReactNotionXNotionRenderer, IProps, NotionComponents } from 'react-notion-x';
-import { FC } from 'react';
 
 interface CustomCodeProps {
   block: any; // 정확한 Block 타입으로 대체
