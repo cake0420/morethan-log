@@ -49,3 +49,23 @@ export type TCategories = {
 }
 
 export type SchemeType = "light" | "dark"
+
+// BlockProps 인터페이스 추가
+import { FC, ComponentType, HTMLAttributes, ReactNode } from "react"
+
+export interface BlockProps {
+  block: any;
+  children?: ReactNode;
+  className?: string;
+  bodyClassName?: string;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  pageHeader?: React.ReactNode;
+  pageFooter?: React.ReactNode;
+  pageTitle?: React.ReactNode;
+  pageAside?: React.ReactNode;
+  pageCover?: React.ReactNode;
+  hideBlockId?: boolean;
+  disableHeader?: boolean;
+  level?: number;
+}
