@@ -1,44 +1,23 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { ExtendedRecordMap } from 'notion-types';
-import NotionRenderer from '../components/NotionRenderer'; // NotionRenderer 컴포넌트 경로 확인
-import { FC, ComponentType } from 'react';
-import { BlockProps } from 'src/types'; // BlockProps를 적절한 위치에서 가져옴
+import React from "react"
+import styled from "@emotion/styled"
+import NotionRenderer from "../components/NotionRenderer"
+import usePostQuery from "src/hooks/usePostQuery"
+type Props = {}
 
-interface PageDetailProps {
-  recordMap: ExtendedRecordMap;
-  components: {
-    Code?: any;
-    Collection?: any;
-    Equation?: any;
-    Modal?: any;
-    Pdf?: any;
-    nextImage?: any;
-    nextLink?: any;
-    Block: FC<BlockProps>;
-  };
-}
+const PageDetail: React.FC<Props> = () => {
+  const data = usePostQuery()
 
-const PageDetail: React.FC<PageDetailProps> = ({ recordMap, components }) => {
+  if (!data) return null
   return (
     <StyledWrapper>
-      <NotionRenderer recordMap={recordMap} components={components} />
+      <NotionRenderer recordMap={data.recordMap} />
     </StyledWrapper>
-  );
-};
+  )
+}
 
-export default PageDetail;
+export default PageDetail
 
 const StyledWrapper = styled.div`
-    /* // TODO: why render? */
-    .notion-collection-page-properties {
-        display: none !important;
-    }
-    .notion-page {
-        padding: 0;
-    }
-    .notion-list {
-        width: 100%;
-    }
-
-`;
+  margin: 0 auto;
+  max-width: 56rem;
+`
