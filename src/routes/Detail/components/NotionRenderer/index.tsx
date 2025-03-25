@@ -1,3 +1,4 @@
+import React from 'react';
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
@@ -54,6 +55,28 @@ type Props = {
   recordMap: ExtendedRecordMap
 }
 
+// 제목 행 컴포넌트 오버라이딩 (가정)
+const CustomHeading = ({ children, level }: { children: React.ReactNode; level: 1 | 2 | 3 }) => {
+  let Tag: React.ComponentType<React.HTMLAttributes<HTMLElement>> = 'h2';
+  switch(level){
+    case 1:
+      Tag = 'h1';
+      break;
+    case 2:
+      Tag = 'h2';
+      break;
+    case 3:
+      Tag = 'h3';
+      break;
+  }
+
+  return (
+    <div> {/* div로 감싸기 */}
+      <Tag>{children}</Tag>
+    </div>
+  );
+};
+
 const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
   return (
@@ -69,6 +92,10 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
           Pdf,
           nextImage: Image,
           nextLink: Link,
+          // Heading: CustomHeading, // 제목 행 컴포넌트 오버라이딩 (가정)
+          h1: (props) => <CustomHeading level={1} {...props}/>,
+          h2: (props) => <CustomHeading level={2} {...props}/>,
+          h3: (props) => <CustomHeading level={3} {...props}/>,
         }}
         mapPageUrl={mapPageUrl}
       />
@@ -79,14 +106,14 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
 export default NotionRenderer
 
 const StyledWrapper = styled.div`
-  /* // TODO: why render? */
-  .notion-collection-page-properties {
-    display: none !important;
-  }
-  .notion-page {
-    padding: 0;
-  }
-  .notion-list {
-    width: 100%;
-  }
+    /* // TODO: why render? */
+    .notion-collection-page-properties {
+        display: none !important;
+    }
+    .notion-page {
+        padding: 0;
+    }
+    .notion-list {
+        width: 100%;
+    }
 `
