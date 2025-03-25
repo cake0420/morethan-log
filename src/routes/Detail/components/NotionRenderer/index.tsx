@@ -65,48 +65,50 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     nextImage: Image,
     nextLink: Link,
     // Custom render for h tags
-    h1: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h1 {...props} />
-      )
-    },
-    h2: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h2 {...props} />
-      )
-    },
-    h3: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h3 {...props} />
-      )
-    },
-    h4: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h4 {...props} />
-      )
-    },
-    h5: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h5 {...props} />
-      )
-    },
-    h6: (props: any) => {
-      return props.className === 'notion-h' ? (
-        <div>{props.children}</div>
-      ) : (
-        <h6 {...props} />
-      )
-    },
+    const customComponents = {
+      h1: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h1 {...props} />
+        )
+      },
+      h2: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h2 {...props} />
+        )
+      },
+      h3: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h3 {...props} />
+        )
+      },
+      h4: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h4 {...props} />
+        )
+      },
+      h5: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h5 {...props} />
+        )
+      },
+      h6: (props: any) => {
+        return props.className.includes('notion-h') ? (
+          <div>{props.children}</div>
+        ) : (
+          <h6 {...props} />
+        )
+      },
+    }
   }
 
   return (
