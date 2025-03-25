@@ -13,7 +13,7 @@ import "prismjs/themes/prism-tomorrow.css"
 // used for rendering equations (optional)
 
 import "katex/dist/katex.min.css"
-import { FC, ComponentType } from "react"
+import { FC, ComponentType, HTMLAttributes } from "react"
 import styled from "@emotion/styled"
 
 const _NotionRenderer = dynamic(
@@ -58,18 +58,20 @@ interface CustomCodeProps {
 
 const CustomCode: FC<CustomCodeProps> = ({ block, className, defaultLanguage }) => {
   const backgroundColor = block?.format?.backgroundColor;
-  const style = {
-    width: '100%',
-    display: 'inline-block',
-    padding: '2px 4px',
-    margin: 0,
-    backgroundColor: backgroundColor || 'transparent',
-  };
+  const isHeading = block.type === 'header' || block.type === 'sub_header' || block.type === 'heading_3'; // Notion 데이터 구조에 따라 수정
+
+  const headingStyle = isHeading ? {
+    width: '100%', // 전체 가로 폭 차지
+    display: 'block', // 블록 레벨 요소로 만들기
+    backgroundColor: backgroundColor || 'transparent', // 배경색 적용
+  } : {};
 
   return (
-    <code className={className} style={style}>
-      {block.properties?.title}
-    </code>
+    <div style={{ ...headingStyle }}> {/* div 태그로 감싸고 스타일 적용 */}
+      <code className={className}> {/* code 스타일 적용 */}
+        {block.properties?.title}
+      </code>
+    </div>
   );
 };
 
@@ -88,7 +90,7 @@ type Props = {
   mapPageUrl?: (id: string) => string;
 }
 
-const NotionRenderer: FC<Props> = ({ recordMap, components, darkMode, mapPageUrl, ...props }) => {
+const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components, ...props }) => {
   const [scheme] = useScheme()
 
   return (
@@ -108,9 +110,9 @@ const NotionRenderer: FC<Props> = ({ recordMap, components, darkMode, mapPageUrl
         }}
         mapPageUrl={mapPageUrl}
         {...props}
-      />
-    </StyledWrapper>
-  )
+    </_NotionRenderer>
+</StyledWrapper>
+)
 }
 
 export default NotionRenderer
