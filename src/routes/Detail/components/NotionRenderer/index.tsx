@@ -1,3 +1,4 @@
+import { NotionComponents } from 'react-notion-x'; // NotionComponents 타입 import
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
