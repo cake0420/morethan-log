@@ -5,6 +5,7 @@ import styled from "@emotion/styled"
 import usePostQuery from "src/hooks/usePostQuery"
 import { ExtendedRecordMap } from "notion-types"
 import { FC, ComponentType } from "react";
+import { BlockProps } from "../components/NotionRenderer/index"
 
 interface PageDetailProps {
   recordMap: ExtendedRecordMap;
@@ -16,6 +17,7 @@ interface PageDetailProps {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
 }
 
@@ -29,6 +31,7 @@ interface PostDetailProps {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
 }
 
@@ -42,6 +45,7 @@ interface Props  {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block: FC<BlockProps>;
   };
 }
 
@@ -52,8 +56,8 @@ const Detail: FC<Props> = ({recordMap, components}) => {
   if (!data) return null
   return (
     <StyledWrapper data-type={data.type}>
-      {data.type[0] === "Page" && <PageDetail recordMap={recordMap} components={components} />}
-      {data.type[0] !== "Page" && <PostDetail  recordMap={recordMap} components={components}/>}
+      {data.type[0] === "Page" && <PageDetail recordMap={recordMap} components={{...components, Block : components.Block }} />}
+      {data.type[0] !== "Page" && <PostDetail  recordMap={recordMap} components={{...components, Block : components.Block }}/>}
     </StyledWrapper>
   )
 }
