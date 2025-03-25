@@ -1,27 +1,31 @@
-import React from "react"
-import styled from "@emotion/styled"
-import NotionRenderer from "../components/NotionRenderer"
-import usePostQuery from "src/hooks/usePostQuery"
+import React from 'react';
+import styled from '@emotion/styled';
+import { ExtendedRecordMap } from 'notion-types';
+import NotionRenderer from '../components/NotionRenderer'; // NotionRenderer 컴포넌트 경로 확인
 
-type Props = {}
-
-const PageDetail: React.FC<Props> = () => {
-  const data = usePostQuery()
-
-  if (!data) return null
-  return (
-    <StyledWrapper>
-      <NotionRenderer
-        recordMap={data.recordMap}
-        components={{}} // 👈 components prop 추가
-      />
-    </StyledWrapper>
-  )
+interface PageDetailProps {
+  recordMap: ExtendedRecordMap;
+  components: {
+    Code?: any;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+  };
 }
 
-export default PageDetail
+const PageDetail: React.FC<PageDetailProps> = ({ recordMap, components }) => {
+  return (
+    <StyledWrapper>
+      <NotionRenderer recordMap={recordMap} components={components} />
+    </StyledWrapper>
+  );
+};
+
+export default PageDetail;
 
 const StyledWrapper = styled.div`
-    margin: 0 auto;
-    max-width: 56rem;
-`
+    /* 스타일 정의 */
+`;
