@@ -55,9 +55,9 @@ type Props = {
   recordMap: ExtendedRecordMap
 }
 
-// 제목 행 컴포넌트 오버라이딩 (가정)
+// 제목 행 컴포넌트 오버라이딩
 const CustomHeading = ({ children, level }: { children: React.ReactNode; level: 1 | 2 | 3 }) => {
-  let Tag: React.ComponentType<React.HTMLAttributes<HTMLElement>> = 'h2';
+  let Tag: string = 'h2'; // Tag 타입을 string으로 변경
   switch(level){
     case 1:
       Tag = 'h1';
@@ -72,7 +72,7 @@ const CustomHeading = ({ children, level }: { children: React.ReactNode; level: 
 
   return (
     <div> {/* div로 감싸기 */}
-      <Tag>{children}</Tag>
+      {React.createElement(Tag, null, children)} {/* React.createElement 사용 */}
     </div>
   );
 };
@@ -92,7 +92,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
           Pdf,
           nextImage: Image,
           nextLink: Link,
-          // Heading: CustomHeading, // 제목 행 컴포넌트 오버라이딩 (가정)
+          // Heading: CustomHeading, // 제목 행 컴포넌트 오버라이딩
           h1: (props) => <CustomHeading level={1} {...props}/>,
           h2: (props) => <CustomHeading level={2} {...props}/>,
           h3: (props) => <CustomHeading level={3} {...props}/>,
