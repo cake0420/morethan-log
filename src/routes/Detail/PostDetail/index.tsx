@@ -8,7 +8,7 @@ import NotionRenderer from "../components/NotionRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
 import { ExtendedRecordMap, CodeBlock } from "notion-types";
 import { FC, ComponentType } from "react";
-import { CustomCodeProps, BlockProps } from '../components/NotionRenderer/index'; // 수정된 import 경로
+import { CustomCodeProps, BlockProps } from '../components/NotionRenderer/components/NotionRenderer'; // 수정된 import 경로
 
 interface PostDetailProps {
   recordMap: ExtendedRecordMap;

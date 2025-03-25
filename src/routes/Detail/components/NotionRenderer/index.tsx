@@ -57,7 +57,8 @@ export interface CustomCodeProps {
   defaultLanguage?: string;
 }
 
-interface BlockProps {
+// BlockProps 인터페이스 export
+export interface BlockProps {
   block: NotionBlock;
   children?: ReactNode;
   className?: string;
@@ -142,8 +143,7 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
       recordMap={recordMap}
       components={{
         ...components,
-        Block: CustomBlock, // CustomBlock 컴포넌트로 Block 컴포넌트 대체
-        Code,
+        Code: CustomCode, // CustomCode 컴포넌트로 Code 컴포넌트 대체
         Collection,
         Equation,
         Modal,
