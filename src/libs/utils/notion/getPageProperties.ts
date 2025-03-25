@@ -66,7 +66,8 @@ async function getPageProperties(
                   resValue?.name ||
                   `${resValue?.family_name}${resValue?.given_name}` ||
                   undefined,
-                profile_photo: resValue?.profile_photo || null,
+                // profile_photo: resValue?.profile_photo || null,
+                avatar_url: resValue?.avatar_url || null,
               }
               users.push(user)
             }
