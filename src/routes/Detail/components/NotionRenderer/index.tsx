@@ -90,7 +90,8 @@ const StyledWrapper = styled.div`
         width: 100%;
     }
 
-    .YOUR_INLINE_CODE_CLASS { /* 정확한 클래스명으로 변경 */
+    /* 인라인 스타일 직접 재정의 (클래스명을 찾을 수 없는 경우) */
+    [style*="background-color"] {
         width: 100% !important;
         display: inline-block;
         padding: 2px 4px;
