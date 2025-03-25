@@ -1,3 +1,4 @@
+// pages/detail.tsx
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
@@ -13,7 +14,7 @@ import "prismjs/themes/prism-tomorrow.css"
 // used for rendering equations (optional)
 
 import "katex/dist/katex.min.css"
-import { FC, ComponentType, HTMLAttributes } from "react"
+import { FC, ComponentType, HTMLAttributes, ReactNode } from "react"
 import styled from "@emotion/styled"
 
 const _NotionRenderer = dynamic(
@@ -56,43 +57,75 @@ interface CustomCodeProps {
   defaultLanguage?: string;
 }
 
-const CustomCode: FC<CustomCodeProps> = ({ block, className, defaultLanguage }) => {
-  console.log('CustomCode 렌더링', block); // CustomCode 컴포넌트 호출 확인
+interface BlockProps {
+  block: any;
+  children?: ReactNode;
+  className?: string;
+  bodyClassName?: string;
+  header?: React.ReactNode;
+  footer?: React.ReactNode;
+  pageHeader?: React.ReactNode;
+  pageFooter?: React.ReactNode;
+  pageTitle?: React.ReactNode;
+  pageAside?: React.ReactNode;
+  pageCover?: React.ReactNode;
+  hideBlockId?: boolean;
+  disableHeader?: boolean;
+  level?: number;
+}
 
-  const backgroundColor = block?.format?.backgroundColor;
-  const isHeading = block.type === 'header' || block.type === 'sub_header' || block.type === 'heading_3'; // Notion 데이터 구조에 따라 수정
+const CustomBlock: FC<BlockProps> = (props) => {
+  const { block, children, className } = props;
 
-  const headingStyle = isHeading ? {
-    width: '100%', // 전체 가로 폭 차지
-    display: 'block', // 블록 레벨 요소로 만들기
-    backgroundColor: backgroundColor || 'transparent', // 배경색 적용
-  } : {};
+  if (block.type === 'header' || block.type === 'sub_header' || block.type === 'sub_sub_header') {
+    const id = mapPageUrl(block.id);
+    const title = block.properties?.title?.[0]?.[0] || `제목 ${id}`;
+    const blockColor = block.format?.block_color
+    const backgroundColor = block?.format?.backgroundColor;
 
-  return (
-    <div style={{ ...headingStyle }}> {/* div 태그로 감싸고 스타일 적용 */}
-      <code className={className}> {/* code 스타일 적용 */}
-        {block.properties?.title}
-      </code>
-    </div>
-  );
+    const headingStyle = {
+      width: '100%',
+      display: 'block',
+      backgroundColor: backgroundColor || 'transparent',
+    };
+
+    let Tag:any = 'h1'
+    if (block.type === 'sub_header') {
+      Tag = 'h2'
+    } else if (block.type === 'sub_sub_header') {
+      Tag = 'h3'
+    }
+
+    return (
+      <div style={headingStyle}>
+        <Tag className={className}>
+          {block.properties?.title?.[0]?.[0]}
+        </Tag>
+        {children}
+      </div>
+    );
+  }
+
+  return <>{props.children}</>;
 };
 
 type Props = {
   recordMap: ExtendedRecordMap;
-  components?: {
-    Code?: ComponentType<CustomCodeProps>;
+  components: {
+    Code?: any;
     Collection?: any;
     Equation?: any;
     Modal?: any;
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
+    Block?: any;
   };
   darkMode?: boolean;
   mapPageUrl?: (id: string) => string;
 }
 
-const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components, ...props }) => {
+const NotionRenderer: FC<Props> = ({ recordMap, components, darkMode, mapPageUrl }) => {
   const [scheme] = useScheme()
 
   return (
@@ -101,20 +134,20 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
         darkMode={scheme === "dark"}
         recordMap={recordMap}
         components={{
-          Code: CustomCode, // CustomCode 컴포넌트로 Code 컴포넌트 대체
+          ...components,
+          Block: CustomBlock,
+          Code,
           Collection,
           Equation,
           Modal,
           Pdf,
           nextImage: Image,
           nextLink: Link,
-          ...components,
         }}
         mapPageUrl={mapPageUrl}
-        {...props}
-    </_NotionRenderer>
-</StyledWrapper>
-)
+      />
+    </StyledWrapper>
+  )
 }
 
 export default NotionRenderer
