@@ -50,15 +50,18 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
+import { Block } from 'notion-types'; // notion-types에서 Block 타입 가져오기
+
 type Props = {
-  recordMap: ExtendedRecordMap
+  recordMap: ExtendedRecordMap;
 }
 
 const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
 
-  const getInlineCodeStyle = (block) => {
-    const backgroundColor = block?.properties?.backgroundColor; // 속성 경로 수정
+  const getInlineCodeStyle = (block: Block) => { // block 타입을 Block으로 명시
+    // block에서 스타일 정보 추출 (예시)
+    const backgroundColor = block?.format?.backgroundColor;
     return {
       width: '100%',
       display: 'inline-block',
@@ -84,7 +87,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
         }}
         mapPageUrl={mapPageUrl}
         // 인라인 스타일 적용
-        blockRenderer={(block) => {
+        blockRenderer={(block: Block) => { // block 타입을 Block으로 명시
           if (block.type === 'code' && block.properties?.language === 'inline') {
             return (
               <code style={getInlineCodeStyle(block)}>
