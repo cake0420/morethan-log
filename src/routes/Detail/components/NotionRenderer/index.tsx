@@ -79,19 +79,21 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
 export default NotionRenderer
 
 const StyledWrapper = styled.div`
-  /* // TODO: why render? */
-  .notion-collection-page-properties {
-    display: none !important;
-  }
-  .notion-page {
-    padding: 0;
-  }
-  .notion-list {
-    width: 100%;
-  }
-    .notion-inline-code {
-        width: 100% !important; /* 또는 display: block !important; */
+    /* // TODO: why render? */
+    .notion-collection-page-properties {
+        display: none !important;
+    }
+    .notion-page {
+        padding: 0;
+    }
+    .notion-list {
+        width: 100%;
     }
 
-    ;
-`
+    .YOUR_INLINE_CODE_CLASS { /* 정확한 클래스명으로 변경 */
+        width: 100% !important;
+        display: inline-block;
+        padding: 2px 4px;
+        margin: 0;
+    }
+`;
