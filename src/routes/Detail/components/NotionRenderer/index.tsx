@@ -50,7 +50,8 @@ const mapPageUrl = (id: string) => {
   return "https://www.notion.so/" + id.replace(/-/g, "")
 }
 
-interface CustomCodeProps {
+// CustomCodeProps 인터페이스 export
+export interface CustomCodeProps {
   block: CodeBlock;
   className?: string;
   defaultLanguage?: string;
