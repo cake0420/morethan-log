@@ -1,9 +1,10 @@
 import { FC, ComponentType } from 'react';
 import { CodeBlock } from 'notion-types';
+import { BlockProps } from './src/routes/Detail/components/NotionRenderer/index'; // Import BlockProps
 
 declare module 'react-notion-x' {
   interface NotionComponents {
-    Block?: FC<any>; // BlockProps 타입을 정확하게 지정
+    Block?: FC<BlockProps>;
     Code?: ComponentType<{
       block: CodeBlock;
       defaultLanguage?: string;

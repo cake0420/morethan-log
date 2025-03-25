@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
-import { ExtendedRecordMap, CodeBlock, Block } from "notion-types"
+import { ExtendedRecordMap, CodeBlock, Block as NotionBlock } from "notion-types"
 import useScheme from "src/hooks/useScheme"
 
 // core styles shared by all of react-notion-x (required)
@@ -97,6 +97,24 @@ const CustomBlock: FC<BlockProps> = ({ block, children, className }) => {
   );
 };
 
+// react-notion-x 타입 확장
+declare module 'react-notion-x' {
+  interface NotionComponents {
+    Block?: FC<BlockProps>;
+    Code?: ComponentType<{
+      block: CodeBlock;
+      defaultLanguage?: string | undefined;
+      className?: string | undefined;
+    }>;
+    Collection?: any;
+    Equation?: any;
+    Modal?: any;
+    Pdf?: any;
+    nextImage?: any;
+    nextLink?: any;
+  }
+}
+
 type Props = {
   recordMap: ExtendedRecordMap;
   components: {
@@ -107,7 +125,7 @@ type Props = {
     Pdf?: any;
     nextImage?: any;
     nextLink?: any;
-    Block: FC<BlockProps>; // 변경: react-notion-x에서 확장된 타입 사용
+    Block?: FC<BlockProps>;
   };
   darkMode?: boolean;
   mapPageUrl?: (id: string) => string;
@@ -124,8 +142,8 @@ const NotionRenderer: FC<Props> = ({ recordMap, darkMode, mapPageUrl, components
       components={{
         ...components,
         Block: CustomBlock, // CustomBlock 컴포넌트로 Block 컴포넌트 대체
-        Collection,
         Code,
+        Collection,
         Equation,
         Modal,
         Pdf,
