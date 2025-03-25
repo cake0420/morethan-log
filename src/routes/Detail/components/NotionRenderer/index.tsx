@@ -65,50 +65,48 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     nextImage: Image,
     nextLink: Link,
     // Custom render for h tags
-    const customComponents = {
-      h1: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h1 {...props} />
-        )
-      },
-      h2: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h2 {...props} />
-        )
-      },
-      h3: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h3 {...props} />
-        )
-      },
-      h4: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h4 {...props} />
-        )
-      },
-      h5: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h5 {...props} />
-        )
-      },
-      h6: (props: any) => {
-        return props.className.includes('notion-h') ? (
-          <div>{props.children}</div>
-        ) : (
-          <h6 {...props} />
-        )
-      },
-    }
+    h1: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h1 {...props} />
+      )
+    },
+    h2: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h2 {...props} />
+      )
+    },
+    h3: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h3 {...props} />
+      )
+    },
+    h4: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h4 {...props} />
+      )
+    },
+    h5: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h5 {...props} />
+      )
+    },
+    h6: (props: any) => {
+      return props.className.includes('notion-h') ? (
+        <div>{props.children}</div>
+      ) : (
+        <h6 {...props} />
+      )
+    },
   }
 
   return (
@@ -117,7 +115,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
         darkMode={scheme === "dark"}
         recordMap={recordMap}
         components={{
-          ...customComponents,
+          ...customComponents, // 여기서 customComponents를 사용합니다.
           nextImage: Image,
           nextLink: Link,
         }}
@@ -126,6 +124,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     </StyledWrapper>
   )
 }
+
 
 export default NotionRenderer
 
