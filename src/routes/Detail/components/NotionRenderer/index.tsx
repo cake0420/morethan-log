@@ -67,6 +67,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     // Custom render for h tags
     h1: (props: any) => {
       const className = props.className || '';
+      console.log(className+" check1")
       return className.includes('notion-h') ? (
         <div>{props.children}</div>
       ) : (
@@ -75,6 +76,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     },
     h2: (props: any) => {
       const className = props.className || '';
+      console.log(className+" check2")
       return className.includes('notion-h') ? (
         <div>{props.children}</div>
       ) : (
