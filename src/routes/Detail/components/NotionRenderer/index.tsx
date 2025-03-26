@@ -66,39 +66,32 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     nextLink: Link,
     // Custom render for h tags
     h1: (props: any) => {
-      const className = props.className || '';
+      const { block, children, ...rest } = props;
+      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
       console.log(className+" check1")
       return className.includes('notion-h') ? (
-        <div>{props.children}</div>
+        <div {...rest}>{children}</div>
       ) : (
-        <h1 {...props} />
-      )
+        <h1 {...rest}>{children}</h1>
+      );
     },
     h2: (props: any) => {
-      const className = props.className || '';
-      console.log(className+" check2")
+      const { block, children, ...rest } = props;
+      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
       return className.includes('notion-h') ? (
-        <div>{props.children}</div>
+        <div {...rest}>{children}</div>
       ) : (
-        <h2 {...props} />
-      )
+        <h1 {...rest}>{children}</h1>
+      );
     },
     h3: (props: any) => {
-      const className = props.className || '';
-
+      const { block, children, ...rest } = props;
+      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
       return className.includes('notion-h') ? (
-        <div>{props.children}</div>
+        <div {...rest}>{children}</div>
       ) : (
-        <h3 {...props} />
-      )
-    },
-    h4: (props: any) => {
-      const className = props.className || '';
-      return className.includes('notion-h') ? (
-        <div>{props.children}</div>
-      ) : (
-        <h4 {...props} />
-      )
+        <h1 {...rest}>{children}</h1>
+      );
     },
   }
   console.log(customComponents.h1, customComponents.h2)
