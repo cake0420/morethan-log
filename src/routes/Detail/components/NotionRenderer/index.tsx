@@ -99,7 +99,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
       )
     },
   }
-
+  console.log(customComponents.h1, customComponents.h2)
   return (
     <StyledWrapper>
       <_NotionRenderer
