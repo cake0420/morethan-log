@@ -68,7 +68,6 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
     h1: (props: any) => {
       const { block, children, ...rest } = props;
       const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
-      console.log(className+" check1")
       return className.includes('notion-h') ? (
         <div {...rest}>{children}</div>
       ) : (
@@ -81,7 +80,7 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
       return className.includes('notion-h') ? (
         <div {...rest}>{children}</div>
       ) : (
-        <h1 {...rest}>{children}</h1>
+        <h2 {...rest}>{children}</h2> // 여기서 <h2>로 변경
       );
     },
     h3: (props: any) => {
@@ -90,10 +89,11 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
       return className.includes('notion-h') ? (
         <div {...rest}>{children}</div>
       ) : (
-        <h1 {...rest}>{children}</h1>
+        <h3 {...rest}>{children}</h3> // 여기서 <h3>로 변경
       );
     },
   }
+
   console.log(customComponents.h1, customComponents.h2)
   return (
     <StyledWrapper>
