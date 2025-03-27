@@ -11,6 +11,7 @@ import "react-notion-x/src/styles.css"
 import "prismjs/themes/prism-tomorrow.css"
 
 // used for rendering equations (optional)
+
 import "katex/dist/katex.min.css"
 import { FC } from "react"
 import styled from "@emotion/styled"
@@ -55,53 +56,17 @@ type Props = {
 
 const NotionRenderer: FC<Props> = ({ recordMap }) => {
   const [scheme] = useScheme()
-
-  const customComponents = {
-    Code,
-    Collection,
-    Equation,
-    Modal,
-    Pdf,
-    nextImage: Image,
-    nextLink: Link,
-    // Custom render for h tags
-    h1: (props: any) => {
-      const { block, children, ...rest } = props;
-      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
-      return className.includes('notion-h') ? (
-        <div {...rest}>{children}</div>
-      ) : (
-        <h1 {...rest}>{children}</h1>
-      );
-    },
-    h2: (props: any) => {
-      const { block, children, ...rest } = props;
-      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
-      return className.includes('notion-h') ? (
-        <div {...rest}>{children}</div>
-      ) : (
-        <h2 {...rest}>{children}</h2> // 여기서 <h2>로 변경
-      );
-    },
-    h3: (props: any) => {
-      const { block, children, ...rest } = props;
-      const className = block?.format?.block_color ? `notion-${block.format.block_color}` : '';
-      return className.includes('notion-h') ? (
-        <div {...rest}>{children}</div>
-      ) : (
-        <h3 {...rest}>{children}</h3> // 여기서 <h3>로 변경
-      );
-    },
-  }
-
-  console.log(customComponents.h1, customComponents.h2)
   return (
     <StyledWrapper>
       <_NotionRenderer
         darkMode={scheme === "dark"}
         recordMap={recordMap}
         components={{
-          ...customComponents, // 여기서 customComponents를 사용합니다.
+          Code,
+          Collection,
+          Equation,
+          Modal,
+          Pdf,
           nextImage: Image,
           nextLink: Link,
         }}
@@ -111,10 +76,10 @@ const NotionRenderer: FC<Props> = ({ recordMap }) => {
   )
 }
 
-
 export default NotionRenderer
 
 const StyledWrapper = styled.div`
+    /* // TODO: why render? */
     .notion-collection-page-properties {
         display: none !important;
     }
