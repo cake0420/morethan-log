@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-notion-x/build/dev/index.js b/node_modules/react-notion-x/build/dev/index.js
+index 0c7f183..be48e68 100644
+--- a/node_modules/react-notion-x/build/dev/index.js
++++ b/node_modules/react-notion-x/build/dev/index.js
+@@ -2242,20 +2242,20 @@ var Block = (props) => {
+       })));
+       let headerBlock = null;
+       if (isH1) {
+-        headerBlock = /* @__PURE__ */ React28.createElement("h2", {
++        headerBlock = /* @__PURE__ */ React28.createElement("div", {
+           className: classNameStr,
+           "data-id": id
+-        }, innerHeader);
++        }, /* @__PURE__ */ React28.createElement("div", null, innerHeader));
+       } else if (isH2) {
+-        headerBlock = /* @__PURE__ */ React28.createElement("h3", {
++        headerBlock = /* @__PURE__ */ React28.createElement("div", {
+           className: classNameStr,
+           "data-id": id
+-        }, innerHeader);
++        }, /* @__PURE__ */ React28.createElement("div", null, innerHeader));
+       } else {
+-        headerBlock = /* @__PURE__ */ React28.createElement("h4", {
++        headerBlock = /* @__PURE__ */ React28.createElement("div", {
+           className: classNameStr,
+           "data-id": id
+-        }, innerHeader);
++        }, /* @__PURE__ */ React28.createElement("div", null, innerHeader));
+       }
+       if ((_g = block.format) == null ? void 0 : _g.toggleable) {
+         return /* @__PURE__ */ React28.createElement("details", {

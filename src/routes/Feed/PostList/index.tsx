@@ -3,15 +3,19 @@ import React, { useEffect, useState } from "react"
 import PostCard from "src/routes/Feed/PostList/PostCard"
 import { DEFAULT_CATEGORY } from "src/constants"
 import usePostsQuery from "src/hooks/usePostsQuery"
+import { TPost } from "src/types"
 
 type Props = {
   q: string
 }
 
-const PostList: React.FC<Props> = ({ q }) => {
+const POSTS_PER_PAGE = 5
+
+const PostList: React.FC<Props> = ({ q }: Props) => {
   const router = useRouter()
-  const data = usePostsQuery()
-  const [filteredPosts, setFilteredPosts] = useState(data)
+  const data: TPost[] = usePostsQuery()
+  const [filteredPosts, setFilteredPosts] = useState<TPost[]>(data)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const currentTag = `${router.query.tag || ``}` || undefined
   const currentCategory = `${router.query.category || ``}` || DEFAULT_CATEGORY
@@ -21,7 +25,7 @@ const PostList: React.FC<Props> = ({ q }) => {
     setFilteredPosts(() => {
       let newFilteredPosts = data
       // keyword
-      newFilteredPosts = newFilteredPosts.filter((post) => {
+      newFilteredPosts = newFilteredPosts.filter((post: TPost) => {
         const tagContent = post.tags ? post.tags.join(" ") : ""
         const searchContent = post.title + post.summary + tagContent
         return searchContent.toLowerCase().includes(q.toLowerCase())
@@ -30,14 +34,14 @@ const PostList: React.FC<Props> = ({ q }) => {
       // tag
       if (currentTag) {
         newFilteredPosts = newFilteredPosts.filter(
-          (post) => post && post.tags && post.tags.includes(currentTag)
+          (post: TPost) => post && post.tags && post.tags.includes(currentTag)
         )
       }
 
       // category
       if (currentCategory !== DEFAULT_CATEGORY) {
         newFilteredPosts = newFilteredPosts.filter(
-          (post) =>
+          (post: TPost) =>
             post && post.category && post.category.includes(currentCategory)
         )
       }
@@ -48,7 +52,18 @@ const PostList: React.FC<Props> = ({ q }) => {
 
       return newFilteredPosts
     })
-  }, [q, currentTag, currentCategory, currentOrder, setFilteredPosts])
+    setCurrentPage(1) // Reset to first page when filters change
+  }, [q, currentTag, currentCategory, currentOrder, setFilteredPosts, data])
+
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE
+  const endIndex = startIndex + POSTS_PER_PAGE
+  const postsToDisplay = filteredPosts.slice(startIndex, endIndex)
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber)
+  }
 
   return (
     <>
@@ -56,10 +71,30 @@ const PostList: React.FC<Props> = ({ q }) => {
         {!filteredPosts.length && (
           <p className="text-gray-500 dark:text-gray-300">Nothing! 😺</p>
         )}
-        {filteredPosts.map((post) => (
+        {postsToDisplay.map((post) => (
           <PostCard key={post.id} data={post} />
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNumber) => (
+              <button
+                key={pageNumber}
+                className={`mx-1 px-3 py-1 rounded-md ${
+                  currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                }`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            )
+          )}
+        </div>
+      )}
     </>
   )
 }
