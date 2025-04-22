@@ -4,6 +4,7 @@ import PostCard from "src/routes/Feed/PostList/PostCard";
 import { DEFAULT_CATEGORY } from "src/constants";
 import usePostsQuery from "src/hooks/usePostsQuery";
 import { TPost } from "src/types";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 type Props = {
   q: string;
@@ -80,69 +81,43 @@ const PostList: React.FC<Props> = ({ q }: Props) => {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex justify-center mt-4">
+        <nav className="flex justify-center items-center mt-4 bg-gray-900 text-gray-100 rounded-lg py-2">
           <button
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === 1
-                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
-                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
-            }`}
-            onClick={() => handlePageChange(1)}
-            disabled={currentPage === 1}
-          >
-            {"<<"}
-          </button>
-          <button
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === 1
-                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
-                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
-            }`}
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
+            className="px-4 py-2 rounded-md hover:bg-gray-700 disabled:opacity-50"
           >
-            {"<"}
+            <FaChevronLeft className="inline-block mr-2" />
+            Prev
           </button>
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNumber) => (
-              <button
-                key={pageNumber}
-                className={`mx-2 px-3 py-1 rounded-md ${
-                  currentPage === pageNumber
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
-                }`}
-                onClick={() => handlePageChange(pageNumber)}
-              >
-                {pageNumber}
-              </button>
-            )
-          )}
+          <div className="flex items-center">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`mx-1 px-3 py-1 rounded-full ${
+                    currentPage === pageNumber
+                      ? "bg-blue-500 text-white"
+                      : "text-gray-900 bg-gray-100 hover:bg-blue-200"
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              )
+            )}
+          </div>
 
           <button
-            className={`mx-2 px-3 py-1 rounded-md ${
-              currentPage === totalPages
-                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
-                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
-            }`}
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
+            className="px-4 py-2 rounded-md hover:bg-gray-700 disabled:opacity-50"
           >
-            {">"}
+            Next
+            <FaChevronRight className="inline-block ml-2" />
           </button>
-          <button
-            className={`mx-2 px-3 py-1 rounded-md ${
-              currentPage === totalPages
-                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
-                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
-            }`}
-            onClick={() => handlePageChange(totalPages)}
-            disabled={currentPage === totalPages}
-          >
-            {">>"}
-          </button>
-        </div>
+        </nav>
       )}
     </>
   );
