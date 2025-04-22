@@ -84,15 +84,38 @@ const PostList: React.FC<Props> = ({ q }: Props) => {
                 ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
                 : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
             }`}
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+          >
+            {"<<"}
+          </button>
+          <button
+            className={`mx-1 px-3 py-1 rounded-md ${
+              currentPage === 1
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
+            }`}
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
           >
-            Previous
+            {"<"}
           </button>
 
-          <span className="mx-2 text-gray-500 dark:text-gray-400">
-            {currentPage} / {totalPages}
-          </span>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNumber) => (
+              <button
+                key={pageNumber}
+                className={`mx-1 px-3 py-1 rounded-md ${
+                  currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
+                }`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            )
+          )}
 
           <button
             className={`mx-1 px-3 py-1 rounded-md ${
@@ -103,7 +126,18 @@ const PostList: React.FC<Props> = ({ q }: Props) => {
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
           >
-            Next
+            {">"}
+          </button>
+          <button
+            className={`mx-1 px-3 py-1 rounded-md ${
+              currentPage === totalPages
+                ? "bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed"
+                : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-500 hover:text-white"
+            }`}
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            {">>"}
           </button>
         </div>
       )}
