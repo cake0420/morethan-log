@@ -1,20 +1,29 @@
 import { getTextContent, getDateValue } from "notion-utils"
 import { NotionAPI } from "notion-client"
-import { BlockMap, CollectionPropertySchemaMap } from "notion-types"
+import { ExtendedRecordMap } from "notion-types"
 import { customMapImageUrl } from "./customMapImageUrl"
+
+type PropertySchema = {
+  [propertyId: string]: {
+    name: string;
+    type: string;
+  };
+};
 
 async function getPageProperties(
   id: string,
-  block: BlockMap,
-  schema: CollectionPropertySchemaMap
+  block: ExtendedRecordMap["block"],
+  schema: PropertySchema
 ) {
   const api = new NotionAPI()
   const rawProperties = Object.entries(block?.[id]?.value?.properties || [])
   const excludeProperties = ["date", "select", "multi_select", "person", "file"]
   const properties: any = {}
+
   for (let i = 0; i < rawProperties.length; i++) {
     const [key, val]: any = rawProperties[i]
     properties.id = id
+
     if (schema[key]?.type && !excludeProperties.includes(schema[key].type)) {
       properties[schema[key].name] = getTextContent(val)
     } else {
@@ -36,13 +45,7 @@ async function getPageProperties(
           properties[schema[key].name] = dateProperty
           break
         }
-        case "select": {
-          const selects = getTextContent(val)
-          if (selects[0]?.length) {
-            properties[schema[key].name] = selects.split(",")
-          }
-          break
-        }
+        case "select":
         case "multi_select": {
           const selects = getTextContent(val)
           if (selects[0]?.length) {
@@ -52,8 +55,8 @@ async function getPageProperties(
         }
         case "person": {
           const rawUsers = val.flat()
-
           const users = []
+
           for (let i = 0; i < rawUsers.length; i++) {
             if (rawUsers[i][0][1]) {
               const userId = rawUsers[i][0]
@@ -66,7 +69,6 @@ async function getPageProperties(
                   resValue?.name ||
                   `${resValue?.family_name}${resValue?.given_name}` ||
                   undefined,
-                // profile_photo: resValue?.profile_photo || null,
                 avatar_url: resValue?.avatar_url || null,
               }
               users.push(user)
