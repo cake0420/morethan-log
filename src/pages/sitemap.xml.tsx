@@ -3,7 +3,7 @@ import { CONFIG } from "site.config"
 import { getServerSideSitemap, ISitemapField } from "next-sitemap"
 import { GetServerSideProps } from "next"
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: (ctx: any) => Promise<Response> = async (ctx) => {
   const posts = await getPosts()
   const dynamicPaths = posts.map((post) => `${CONFIG.link}/${post.slug}`)
 
