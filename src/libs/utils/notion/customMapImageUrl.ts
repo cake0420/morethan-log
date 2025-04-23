@@ -43,7 +43,7 @@ export const customMapImageUrl = (url: string, block: Block): string => {
   }`
 
   const notionImageUrlV2 = new URL(url)
-  let table = block.parent_table === 'space' ? 'block' : block.parent_table
+  let table = block.parent_table === 'space' ? 'block' : (block.parent_table || 'block')
   if (table === 'collection' || table === 'team') {
     table = 'block'
   }
